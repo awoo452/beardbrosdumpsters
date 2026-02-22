@@ -1,3 +1,5 @@
+<% icons = defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS : {} %>
+
 <div class="dashboard-container">
   <div class="section">
     <h3>Landing Cards</h3>
@@ -34,8 +36,13 @@
 
   <div class="section">
     <h3>Rentals</h3>
-    <h5>When adding a dumpster rental, use the following letter in the title field based on the necessary emoji.</h5>
-    <h6>A 🟩</h6><h6>B 🟦</h6><h6>C 🟥</h6><h6>D 🟧</h6>
+    <p class="dashboard-note">When adding a dumpster rental, start the title with one of these letters to set the calendar emoji.</p>
+    <ul class="emoji-key">
+      <li><strong>A</strong> <span class="emoji"><%= icons["A"] || "🗑️" %></span></li>
+      <li><strong>B</strong> <span class="emoji"><%= icons["B"] || "🗑️" %></span></li>
+      <li><strong>C</strong> <span class="emoji"><%= icons["C"] || "🗑️" %></span></li>
+      <li><strong>D</strong> <span class="emoji"><%= icons["D"] || "🗑️" %></span></li>
+    </ul>
     <%= link_to 'New Rental', new_rental_path %>
     <% if @rentals.present? %>
       <ul>

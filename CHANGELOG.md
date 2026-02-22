@@ -1,3 +1,6 @@
+## [1.0.6] - 2026/02/22
+### Dashboard Updates
+
 ## [1.0.5] - 2026/02/22
 ### Mobile-Friendly UI Cleanup
 
