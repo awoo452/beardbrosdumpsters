@@ -1,5 +1,21 @@
 
 
+## [1.0.4] - 2026/02/22
+### Rentals Calendar Refresh
+
+### Added
+- **Dumpster icons**:
+  - `DUMPSTER_ICONS` YAML mapping and initializer.
+  - Emoji cycling in the rentals legend (CSS-only).
+  - Phone link in the legend for quick availability calls.
+
+### Changed
+- **Rentals calendar UI**:
+  - Reworked layout, copy, and styling for clarity and readability.
+  - Calendar cells now render dumpster emojis instead of colored squares.
+- **Rental model**:
+  - Emoji selection now pulls from `DUMPSTER_ICONS` with safe fallbacks.
+
 ## [1.0.3] - 2026/02/22
 ### Runtime Updates
 

@@ -1,15 +1,46 @@
 <p style="color: green"><%= notice %></p>
-<h5>We have 3 dumpsters available, and when viewing the calendar, each colored square represents a day where one of the available dumpsters has been rented and is considered not available.</h5>
-<h5>Generally, if the date(s) in question do not have 3 colored squares, we have a dumpster rental available, but please call to confirm availability or to schedule!</h5>
-<%= month_calendar(starting_day: :sunday) do |date| %>
-  <div class="calendar-day">
-    <span class="date-number"><%= date.day %></span>
-    <% @rentals.each do |rental| %>
-      <% if rental.start_time.to_date <= date && rental.end_time.to_date >= date %>
-        <div class="rental">
-          <%= rental.emoji %>
-        </div>
-      <% end %>
+
+<section class="rentals">
+  <header class="rentals__intro">
+    <p class="rentals__eyebrow">Availability</p>
+    <h1>Dumpster Rental Calendar</h1>
+    <p class="rentals__lead">
+      We keep three dumpsters in rotation. Each truck icon on any particular day represents one of our dumpsters booked for that day.
+      If you see fewer than three icons, there is likely availability. Please call to confirm or schedule.
+    </p>
+  </header>
+
+  <div class="rentals__legend">
+    <div class="legend-item">
+      <span class="legend-icon legend-icon--cycle" aria-hidden="true">
+        <span><%= defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS["A"] : "🗑️" %></span>
+        <span><%= defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS["B"] : "🗑️" %></span>
+        <span><%= defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS["C"] : "🗑️" %></span>
+        <span><%= defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS["D"] : "🗑️" %></span>
+      </span>
+      <span>Booked dumpster</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-icon">📞</span>
+      <%= link_to "Call to confirm availability", "tel:+17179065131", class: "legend-link" %>
+    </div>
+  </div>
+
+  <div class="calendar-container">
+    <%= month_calendar(starting_day: :sunday) do |date| %>
+      <div class="calendar-day">
+        <span class="date-number"><%= date.day %></span>
+        <% @rentals.each do |rental| %>
+          <% next if rental.start_time.blank? || rental.end_time.blank? %>
+          <% if rental.start_time.to_date <= date && rental.end_time.to_date >= date %>
+            <div class="rental" title="Booked dumpster">
+              <%= rental.emoji %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
-<% end %>
+
+  <p class="rentals__footer">Questions or ready to book? Give us a call and we will get you on the schedule.</p>
+</section>

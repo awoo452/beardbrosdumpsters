@@ -1,11 +1,7 @@
 class Rental < ApplicationRecord
-    def emoji
-        case title[0]
-        when "A" then "🟩"
-        when "B" then "🟦"
-        when "C" then "🟥"
-        when "D" then "🟧"
-        else "🗑️"
-        end
-      end
+  def emoji
+    icons = defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS : {}
+    key = title.to_s.strip[0]&.upcase
+    icons[key] || icons["default"] || "🗑️"
   end
+end

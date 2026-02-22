@@ -1,73 +1,198 @@
-.calendar-container {
+.rentals {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  color: #2a221b;
+}
+
+.rentals__intro {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.rentals__eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #8b7b6b;
+  margin: 0 0 6px;
+}
+
+.rentals__intro h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+.rentals__lead {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #5a4f45;
+  line-height: 1.5;
+}
+
+.rentals__legend {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 22px;
+  align-items: center;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f6f1ea;
+  border: 1px solid #eadfce;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #4a3f35;
+  font-size: 0.95rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.legend-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 600px) {
+  .rentals__legend {
+    flex-direction: column;
+  }
+
+  .legend-item {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+.legend-icon {
+  font-size: 1.1rem;
+}
+
+.legend-icon--cycle {
+  position: relative;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  max-width: 100vw;
-  max-height: 80vh;
-  padding: 10px;
+  overflow: hidden;
+}
+
+.legend-icon--cycle span {
+  position: absolute;
+  opacity: 0;
+  animation: dumpster-cycle 8s infinite;
+}
+
+.legend-icon--cycle span:nth-child(1) { animation-delay: 0s; }
+.legend-icon--cycle span:nth-child(2) { animation-delay: 2s; }
+.legend-icon--cycle span:nth-child(3) { animation-delay: 4s; }
+.legend-icon--cycle span:nth-child(4) { animation-delay: 6s; }
+
+@keyframes dumpster-cycle {
+  0% { opacity: 0; transform: scale(0.9); }
+  5% { opacity: 1; transform: scale(1); }
+  25% { opacity: 1; transform: scale(1); }
+  30% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 0; }
+}
+
+.calendar-container {
+  display: block;
+  max-width: 100%;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #eadfce;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
 }
 
 .simple-calendar {
   width: 100%;
   border-collapse: collapse;
-  
+
   a {
     text-decoration: none;
-    color: black;
+    color: inherit;
   }
-}
-
-h5 {
-  font-weight: bold;
-  text-align: center;
-  margin: 10px 0;
 }
 
 .calendar-heading {
   font-weight: bold;
   text-align: center;
-  margin: 10px 0;
+  margin: 10px 0 16px;
+  color: #3d332a;
 }
 
-th, td {
+.simple-calendar th,
+.simple-calendar td {
   width: 14.2857%;
-  height: 80px; /* Increased height to better fit date + rentals */
+  height: 100px;
   text-align: center;
-  vertical-align: top; /* Aligns content to the top */
-  border: 1px solid #ddd;
-  padding: 5px;
+  vertical-align: top;
+  border: 1px solid #eee3d7;
+  padding: 6px;
 }
 
-th {
-  background-color: #f0f0f0;
+.simple-calendar th {
+  background-color: #f3eee8;
+  color: #5a4f45;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
 }
 
-td {
-  position: relative;
-  font-size: 1.2em;
-  padding: 5px;
+.simple-calendar td {
+  background: #fff;
+  font-size: 1rem;
 }
 
-td.current-month {
-  background-color: #f9f9f9;
+.simple-calendar td.today {
+  background-color: #fff2cf;
+  border: 2px solid #f1c46f;
 }
 
-td.today {
-  background-color: #ffeb3b;
+.simple-calendar td.not-month {
+  background-color: #faf7f3;
+  color: #b9aa99;
 }
 
-/* Style for the date number */
+.calendar-day {
+  min-height: 86px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
 .date-number {
-  font-size: 0.9em;
-  font-weight: bold;
-  display: block; /* Forces it to be on its own line */
-  margin-bottom: 5px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #3d332a;
+  align-self: flex-start;
 }
 
-/* Adjust rentals to display inline */
 .rental {
-  display: inline-block;
-  margin: 2px; /* Small spacing between rentals */
-  font-size: 1.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: #f6f1ea;
+  border: 1px solid #eadfce;
+  font-size: 1.1rem;
+}
+
+.rentals__footer {
+  text-align: center;
+  margin-top: 18px;
+  color: #5a4f45;
 }
