@@ -11,6 +11,17 @@
 - **Dashboard note**:
   - Updated guidance to mention the new dropdown.
 
+## [1.0.8] - 2026/02/22
+### Rental Emoji Cleanup
+
+### Changed
+- **Rental emoji logic**:
+  - Removed title-based emoji selection; dropdown is now the only source.
+- **Rental form**:
+  - Emoji selection is always required (defaults to A).
+- **Dashboard note**:
+  - Simplified guidance to match the new behavior.
+
 ## [1.0.6] - 2026/02/22
 ### Dashboard Updates
 

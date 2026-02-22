@@ -20,7 +20,7 @@
 
   <div>
     <%= form.label :emoji_key, "Dumpster Emoji", style: "display: block" %>
-    <%= form.select :emoji_key, options_for_select(emoji_options, rental.emoji_key), include_blank: "Auto (from title)" %>
+    <%= form.select :emoji_key, options_for_select(emoji_options, rental.emoji_key || "A") %>
   </div>
 
   <div>
