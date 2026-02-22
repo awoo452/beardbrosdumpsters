@@ -1,4 +1,18 @@
+## [1.0.5] - 2026/02/22
+### Mobile-Friendly UI Cleanup
 
+### Added
+- **Global styling**:
+  - Shared color/spacing variables and base styles.
+  - Viewport meta tag and `<main>` wrapper for layout consistency.
+
+### Changed
+- **Navigation**:
+  - Responsive spacing and button styling for mobile.
+- **Landing, Articles, Videos, Dashboard**:
+  - Updated layouts and card styling to match the rentals design language.
+- **Footer**:
+  - Removed inline styles in favor of stylesheet rules.
 
 ## [1.0.4] - 2026/02/22
 ### Rentals Calendar Refresh

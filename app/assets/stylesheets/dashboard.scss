@@ -2,42 +2,43 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 20px;
-    background-color: #f4f4f9;
+    padding: 32px 16px 48px;
+    background-color: var(--color-bg);
   }
   
   .section {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--color-surface);
+    padding: 18px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-sand-border);
+    box-shadow: var(--shadow-soft);
   }
   
-  h3 {
-    color: #333;
+  .dashboard-container h3 {
+    color: var(--color-ink);
     font-size: 1.5em;
     margin-bottom: 15px;
   }
   
-  ul {
+  .dashboard-container ul {
     list-style-type: none;
     padding: 0;
   }
   
-  li {
+  .dashboard-container li {
     margin: 10px 0;
     font-size: 1.1em;
   }
   
   .edit-link {
     text-decoration: none;
-    color: #007bff;
+    color: var(--color-accent);
     font-weight: bold;
     margin-left: 10px;
   }
   
   .edit-link:hover {
-    color: #0056b3;
+    color: var(--color-ink);
   }
   
   @media (max-width: 768px) {

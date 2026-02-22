@@ -2,7 +2,7 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px 16px 48px;
-  color: #2a221b;
+  color: var(--color-ink);
 }
 
 .rentals__intro {
@@ -14,7 +14,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #8b7b6b;
+  color: var(--color-muted);
   margin: 0 0 6px;
 }
 
@@ -26,7 +26,7 @@
 .rentals__lead {
   max-width: 720px;
   margin: 0 auto;
-  color: #5a4f45;
+  color: var(--color-muted);
   line-height: 1.5;
 }
 
@@ -43,11 +43,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #f6f1ea;
-  border: 1px solid #eadfce;
+  background: var(--color-sand);
+  border: 1px solid var(--color-sand-border);
   padding: 8px 14px;
-  border-radius: 999px;
-  color: #4a3f35;
+  border-radius: var(--radius-pill);
+  color: var(--color-muted);
   font-size: 0.95rem;
   justify-content: center;
   text-align: center;
@@ -107,10 +107,10 @@
   display: block;
   max-width: 100%;
   padding: 12px;
-  background: #fff;
-  border: 1px solid #eadfce;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  background: var(--color-surface);
+  border: 1px solid var(--color-sand-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
   overflow-x: auto;
 }
 
@@ -128,7 +128,7 @@
   font-weight: bold;
   text-align: center;
   margin: 10px 0 16px;
-  color: #3d332a;
+  color: var(--color-ink);
 }
 
 .simple-calendar th,
@@ -137,20 +137,20 @@
   height: 100px;
   text-align: center;
   vertical-align: top;
-  border: 1px solid #eee3d7;
+  border: 1px solid var(--color-sand-border);
   padding: 6px;
 }
 
 .simple-calendar th {
-  background-color: #f3eee8;
-  color: #5a4f45;
+  background-color: var(--color-sand);
+  color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.75rem;
 }
 
 .simple-calendar td {
-  background: #fff;
+  background: var(--color-surface);
   font-size: 1rem;
 }
 
@@ -175,7 +175,7 @@
 .date-number {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #3d332a;
+  color: var(--color-ink);
   align-self: flex-start;
 }
 
@@ -186,13 +186,13 @@
   width: 26px;
   height: 26px;
   border-radius: 6px;
-  background: #f6f1ea;
-  border: 1px solid #eadfce;
+  background: var(--color-sand);
+  border: 1px solid var(--color-sand-border);
   font-size: 1.1rem;
 }
 
 .rentals__footer {
   text-align: center;
   margin-top: 18px;
-  color: #5a4f45;
+  color: var(--color-muted);
 }

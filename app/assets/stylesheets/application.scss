@@ -7,23 +7,64 @@
 
 @import "simple_calendar";
 
-form input[type="text"], form textarea {
-    font-size: 1.2em;  /* Adjust font size for better readability */
-    padding: 10px;  /* Add padding for better touch/feel */
-    width: 100%;  /* Ensure inputs take up full width of the form */
-    border-radius: 5px;  /* Rounded corners for a cleaner look */
-    border: 1px solid #ccc;  /* Light border for contrast */
-    box-sizing: border-box;  /* Make sure padding doesn't overflow the box */
-  }
-  
-  form textarea {
-    height: 150px;  /* Set a fixed height for text areas */
-  }
-  
-  form input[type="text"] {
-    height: 40px;  /* Set a height for text inputs */
-  }
+:root {
+  --color-ink: #2a221b;
+  --color-muted: #5a4f45;
+  --color-bg: #fbf8f3;
+  --color-surface: #ffffff;
+  --color-sand: #f6f1ea;
+  --color-sand-border: #eadfce;
+  --color-accent: #c67b2b;
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.08);
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+}
 
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+main {
+  display: block;
+}
+
+footer {
+  text-align: center;
+  padding: 24px 16px 32px;
+  color: var(--color-muted);
+}
+
+form input[type="text"],
+form textarea {
+  font-size: 1.1em;
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--color-sand-border);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+form textarea {
+  height: 150px;
+}
+
+form input[type="text"] {
+  height: 42px;
+}

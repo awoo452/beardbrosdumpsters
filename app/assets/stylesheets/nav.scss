@@ -3,24 +3,29 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white; // Set background to white
-    padding: 15px;
-    font-family: 'Arial', sans-serif; // Change to a better font (default to Arial)
+    background-color: var(--color-surface);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-sand-border);
+    gap: 16px;
   
     img {
-      max-height: 150px;
+      max-height: 110px;
     }
   
     .logo {
       font-size: 24px;
       font-weight: bold;
-      color: #333; // Change text color to dark gray instead of white for better contrast
+      color: var(--color-ink);
+      text-align: center;
     }
   
     .nav-links {
       list-style: none;
       display: flex;
       gap: 20px;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
   
       li {
         display: inline;
@@ -28,28 +33,42 @@ nav {
   
       li a {
         text-decoration: none;
-        color: #333; // Adjust text color to dark gray
+        color: var(--color-ink);
         font-size: 16px;
-        font-family: 'Arial', sans-serif; // Ensure consistency in font
+        font-family: inherit;
   
         &:hover {
-          color: #f39c12;
+          color: var(--color-accent);
         }
       }
     }
   
     .user-subnav {
       font-size: 14px;
-      color: #333; // Darker text for subnav
+      color: var(--color-ink);
   
       a {
-        color: #333; // Adjust text color to dark gray
+        color: var(--color-ink);
   
         &:hover {
-          color: #f39c12;
+          color: var(--color-accent);
         }
       }
     }
+  }
+
+  .sign-out-button {
+    background: var(--color-sand);
+    border: 1px solid var(--color-sand-border);
+    color: var(--color-ink);
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .sign-out-button:hover {
+    background: #efe5d7;
   }
   
   // Responsive styles for screens smaller than 850px
@@ -64,6 +83,10 @@ nav {
       font-size: 20px;  // Smaller logo font
       margin-bottom: 10px;  // Space below the logo
       text-align: center;  // Ensure the logo text is centered
+    }
+
+    nav img {
+      max-height: 90px;
     }
   
     .nav-links {
