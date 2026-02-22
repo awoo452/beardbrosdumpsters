@@ -1,5 +1,13 @@
 
 
+## [1.0.3] - 2026/02/22
+### Runtime Updates
+
+### Changed
+- **Ruby**: Updated to 4.0.1 (pinned in `.ruby-version`, `Gemfile`, and `Dockerfile`).
+- **Rails**: Updated to 8.1.2 (pinned in `Gemfile` and `Gemfile.lock`).
+- **README**: Updated version references.
+
 ## [1.0.2] - 2025/04/02
 ### Dashboard Enhancements & Calendar Context
 
