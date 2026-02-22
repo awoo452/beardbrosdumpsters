@@ -1,3 +1,16 @@
+## [1.0.7] - 2026/02/22
+### Rental Emoji Selection
+
+### Added
+- **Rental form**:
+  - Emoji dropdown to select the dumpster icon explicitly.
+
+### Changed
+- **Rental emoji logic**:
+  - Honors the selected emoji when present, otherwise falls back to title prefix.
+- **Dashboard note**:
+  - Updated guidance to mention the new dropdown.
+
 ## [1.0.6] - 2026/02/22
 ### Dashboard Updates
 

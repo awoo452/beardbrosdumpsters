@@ -1,4 +1,6 @@
 <%= form_with(model: rental) do |form| %>
+  <% icons = defined?(DUMPSTER_ICONS) ? DUMPSTER_ICONS : {} %>
+  <% emoji_options = %w[A B C D].map { |key| ["#{key} #{icons[key] || "🗑️"}", key] } %>
   <% if rental.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(rental.errors.count, "error") %> prohibited this rental from being saved:</h2>
@@ -14,6 +16,11 @@
   <div>
     <%= form.label :title, style: "display: block" %>
     <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :emoji_key, "Dumpster Emoji", style: "display: block" %>
+    <%= form.select :emoji_key, options_for_select(emoji_options, rental.emoji_key), include_blank: "Auto (from title)" %>
   </div>
 
   <div>
