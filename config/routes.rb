@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :pricing_cards
   resources :landing_cards
   devise_for :users
+  get "/terms", to: "legal#terms"
+  get "/privacy", to: "legal#privacy"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/dashboard', to: 'dashboard#index', as: :dashboard
 

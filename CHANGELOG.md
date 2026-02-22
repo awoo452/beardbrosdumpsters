@@ -1,3 +1,13 @@
+## [1.0.9] - 2026/02/22
+### Legal Pages
+
+### Added
+- Terms of Use and Privacy Policy pages.
+- LICENSE file.
+
+### Changed
+- Footer now links to Terms and Privacy.
+
 ## [1.0.7] - 2026/02/22
 ### Rental Emoji Selection
 
