@@ -1,3 +1,9 @@
+## [1.0.12] - 2026/02/23
+### UI Cleanup
+
+### Removed
+- Flash notices/alerts from controllers and views.
+
 ## [1.0.11] - 2026/02/23
 ### Pricing Cards Removal
 

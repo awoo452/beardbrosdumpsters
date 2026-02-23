@@ -14,7 +14,7 @@ class DashboardController < ApplicationController
 
   def check_approval
     unless current_user.approved?
-      redirect_to root_path, alert: "Your account is not approved yet."
+      redirect_to root_path
     end
   end
 end

@@ -26,7 +26,7 @@ class LandingCardsController < ApplicationController
 
     respond_to do |format|
       if @landing_card.save
-        format.html { redirect_to @landing_card, notice: "Landing card was successfully created." }
+        format.html { redirect_to @landing_card }
         format.json { render :show, status: :created, location: @landing_card }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class LandingCardsController < ApplicationController
   def update
     respond_to do |format|
       if @landing_card.update(landing_card_params)
-        format.html { redirect_to @landing_card, notice: "Landing card was successfully updated." }
+        format.html { redirect_to @landing_card }
         format.json { render :show, status: :ok, location: @landing_card }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class LandingCardsController < ApplicationController
     @landing_card.destroy!
 
     respond_to do |format|
-      format.html { redirect_to landing_cards_path, status: :see_other, notice: "Landing card was successfully destroyed." }
+      format.html { redirect_to landing_cards_path, status: :see_other }
       format.json { head :no_content }
     end
   end

@@ -26,7 +26,7 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       if @video.save
-        format.html { redirect_to @video, notice: "Video was successfully created." }
+        format.html { redirect_to @video }
         format.json { render :show, status: :created, location: @video }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class VideosController < ApplicationController
   def update
     respond_to do |format|
       if @video.update(video_params)
-        format.html { redirect_to @video, notice: "Video was successfully updated." }
+        format.html { redirect_to @video }
         format.json { render :show, status: :ok, location: @video }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class VideosController < ApplicationController
     @video.destroy!
 
     respond_to do |format|
-      format.html { redirect_to videos_path, status: :see_other, notice: "Video was successfully destroyed." }
+      format.html { redirect_to videos_path, status: :see_other }
       format.json { head :no_content }
     end
   end
