@@ -73,3 +73,35 @@ form input[type="text"] {
 form select {
   height: 42px;
 }
+
+.docs-page {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.docs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.docs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.docs-meta {
+  color: var(--color-muted);
+  margin: 4px 0 0;
+  font-size: 0.95em;
+}
+
+.docs-body {
+  margin-top: 16px;
+}

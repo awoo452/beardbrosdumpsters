@@ -1,0 +1,24 @@
+<section class="docs-page">
+  <header class="docs-header">
+    <div>
+      <h1>Docs</h1>
+      <p>Internal notes and workflows for this site.</p>
+    </div>
+    <div>
+      <%= link_to "New Doc", new_document_path %>
+    </div>
+  </header>
+
+  <% if @documents.any? %>
+    <ul class="docs-list">
+      <% @documents.each do |document| %>
+        <li>
+          <h3><%= link_to document.title, document %></h3>
+          <p class="docs-meta">Created <%= document.created_at.strftime("%Y-%m-%d") %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No docs yet.</p>
+  <% end %>
+</section>

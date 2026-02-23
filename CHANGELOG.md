@@ -1,3 +1,11 @@
+## [1.0.10] - 2026/02/23
+### Docs Section
+
+### Added
+- Documents feature with CRUD pages for internal docs.
+- Docs landing page linked from the dashboard.
+- Seed SQL for initial docs (`db/docs.sql`).
+
 ## [1.0.9] - 2026/02/22
 ### Legal Pages
 

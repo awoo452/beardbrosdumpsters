@@ -1,0 +1,15 @@
+<%= form_with model: @document do |f| %>
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :body %>
+    <%= f.text_area :body, rows: 12, required: true %>
+  </div>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>

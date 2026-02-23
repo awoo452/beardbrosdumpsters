@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :articles
   resources :pricing_cards
   resources :landing_cards
+  resources :documents
   devise_for :users
   get "/terms", to: "legal#terms"
   get "/privacy", to: "legal#privacy"
