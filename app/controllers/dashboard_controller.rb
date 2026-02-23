@@ -5,7 +5,6 @@ class DashboardController < ApplicationController
   def index
     @user = current_user
     @landing_cards = LandingCard.all
-    @pricing_cards = PricingCard.all
     @articles = Article.all
     @rentals = Rental.all
     @videos = Video.all

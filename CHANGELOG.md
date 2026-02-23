@@ -1,3 +1,13 @@
+## [1.0.11] - 2026/02/23
+### Pricing Cards Removal
+
+### Removed
+- Pricing cards feature, routes, and UI.
+- Pricing card model, controller, views, tests, and fixture data.
+
+### Added
+- Migration to drop the pricing_cards table.
+
 ## [1.0.10] - 2026/02/23
 ### Docs Section
 

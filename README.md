@@ -22,7 +22,6 @@ Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It p
 - Rentals page shows a month view calendar. Each rental paints a colored block for every day between `start_time` and `end_time`.
 - The app assumes three dumpsters total. If a date shows fewer than three blocks, there is likely availability (the UI still advises customers to call to confirm).
 - Videos page embeds YouTube videos using the `youtube_id` field. Add `?autoplay=1` to the URL to auto-play the embeds.
-- Pricing cards exist but are not linked in the main nav. They can be visited at `/pricing_cards`.
 - Only signed-in users can create/edit content. The dashboard link appears only for approved users.
 
 **Admin Workflow**

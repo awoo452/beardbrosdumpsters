@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   resources :videos
   resources :rentals
   resources :articles
-  resources :pricing_cards
   resources :landing_cards
   resources :documents
   devise_for :users
