@@ -27,7 +27,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # SassC integration for Rails
-gem "sassc-rails", "~> 0.1.5"
+gem "sassc-rails", "~> 2.1.2"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
