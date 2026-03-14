@@ -1,12 +1,21 @@
-## [1.0.12] - 2026/02/23
-### UI Cleanup
+# Changelog
+All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
+spec/v2.0.0.html).
+
+## [1.0.13] - 2026-03-14
+### Added
+- Added ai_dev_agent automation script for routine updates.
+
+### Changed
+- Changelog standardization.
+
+## [1.0.12] - 2026/02/23
 ### Removed
 - Flash notices/alerts from controllers and views.
 
 ## [1.0.11] - 2026/02/23
-### Pricing Cards Removal
-
 ### Removed
 - Pricing cards feature, routes, and UI.
 - Pricing card model, controller, views, tests, and fixture data.
@@ -15,16 +24,12 @@
 - Migration to drop the pricing_cards table.
 
 ## [1.0.10] - 2026/02/23
-### Docs Section
-
 ### Added
 - Documents feature with CRUD pages for internal docs.
 - Docs landing page linked from the dashboard.
 - Seed SQL for initial docs (`db/docs.sql`).
 
 ## [1.0.9] - 2026/02/22
-### Legal Pages
-
 ### Added
 - Terms of Use and Privacy Policy pages.
 - LICENSE file.
