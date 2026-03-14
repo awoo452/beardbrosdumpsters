@@ -39,7 +39,7 @@ create_work_branch()
 # get repository files
 # -----------------------------
 
-files = subprocess.check_output(["git","ls-files"]).decode().splitlines()
+files = subprocess.check_output(["git", "ls-files"]).decode().splitlines()
 
 ignore = [
     "CHANGELOG.md",
@@ -52,7 +52,16 @@ if not files:
     print("No repo files found.")
     exit()
 
-file_list = "\n".join(files[:40])
+# Always include high-priority paths, then fill up to 40 files.
+priority_prefixes = [
+    "docs/",
+]
+
+priority_files = [f for f in files if any(f.startswith(p) for p in priority_prefixes)]
+remaining_files = [f for f in files if f not in priority_files]
+max_files = 40
+file_candidates = priority_files + remaining_files[: max(0, max_files - len(priority_files))]
+file_list = "\n".join(file_candidates)
 
 # -----------------------------
 # AI selects file

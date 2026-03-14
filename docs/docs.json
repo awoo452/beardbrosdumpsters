@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Access and sign-in requirements",
+    "body": "Home, Articles, Rentals, and Videos are public pages. The dashboard and content management actions require sign-in as an admin user. Only approved users see the Dashboard link and should be granted access in the Rails console. Reach out to site admin for user approval.",
+    "created_at": "2026-02-23 12:00:00",
+    "updated_at": "2026-02-23 00:42:58.218239"
+  },
+  {
+    "id": 2,
+    "title": "Landing page featured cards",
+    "body": "THESE ARE EDITABLE BY YOU IN ARTICLES SECTION OF DASHBOARD ONCE LOGGED IN.\r\n\r\nThe home page pulls the latest three LandingCard records. Each card uses a title, description, and optional image filename. Store image files in app/assets/images and reference the filename in the record.\r\n",
+    "created_at": "2026-02-23 12:00:00",
+    "updated_at": "2026-02-23 00:57:23.361491"
+  },
+  {
+    "id": 3,
+    "title": "Rentals calendar behavior",
+    "body": "Rentals are displayed in a month calendar. Each rental assigns a truck or related emoji for every day between start_time and end_time. The rentals section of the site assumes three dumpsters will always be available, with 4th available. If fewer than three blocks appear on a date, availability is likely (still confirm by phone). The dumpster emoji comes only from the dropdown selection on the rental form.",
+    "created_at": "2026-02-23 12:00:00",
+    "updated_at": "2026-02-23 01:13:18.845119"
+  },
+  {
+    "id": 4,
+    "title": "Articles and images",
+    "body": "Articles section is 100% managed by getawd.com at this time and posts are made when we push updates. It has title, description, body, and optional image. Image fields store a filename only, based on the file in app/assets/images, stored in the image field of db for the record in question. Don''t use this section without prior site admin approval at this time.",
+    "created_at": "2026-02-23 12:00:00",
+    "updated_at": "2026-02-23 01:00:02.960813"
+  },
+  {
+    "id": 5,
+    "title": "Videos and YouTube embeds",
+    "body": "Videos store a youtube_id and render through an embedded player. youtube_id is basically the ~8 characters of shit after youtube.com/ in the url for the video in question. Ignore the shit after the ?. Copy the characters in the middle.",
+    "created_at": "2026-02-23 12:00:00",
+    "updated_at": "2026-02-23 01:01:52.946895"
+  },
+  {
+    "id": 6,
+    "title": "Pricing cards",
+    "body": "Pricing cards exist but are not linked in the main navigation. They are accessible at /pricing_cards and can be edited by signed-in users. This is legacy shit that should be removed at ASAP time.",
+    "created_at": "2026-02-23 12:00:00",
+    "updated_at": "2026-02-23 00:47:18.116032"
+  }
+]
