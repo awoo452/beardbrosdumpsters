@@ -9,6 +9,7 @@ CHANGELOG = "CHANGELOG.md"
 BRANCH_BASE = "ai_dev_agent"
 NO_CHANGE = "NO_CHANGE"
 NO_CHANGE_MESSAGE = "No worthwhile improvements found; repo looks solid from here."
+LAST_SELECTED_FILE = ".ai_dev_agent_last_file"
 
 
 def normalize_model_output(text, original):
@@ -98,6 +99,12 @@ priority_files = [f for f in files if any(f.startswith(p) for p in priority_pref
 remaining_files = [f for f in files if f not in priority_files]
 max_files = 40
 file_candidates = priority_files + remaining_files[: max(0, max_files - len(priority_files))]
+last_selected = None
+if os.path.exists(LAST_SELECTED_FILE):
+    with open(LAST_SELECTED_FILE, "r") as f:
+        last_selected = f.read().strip()
+if last_selected in file_candidates and len(file_candidates) > 1:
+    file_candidates = [f for f in file_candidates if f != last_selected]
 file_list = "\n".join(file_candidates)
 
 # -----------------------------
@@ -108,6 +115,7 @@ selection_prompt = """
 You are reviewing a software repository.
 
 Choose ONE file that could benefit from a small improvement.
+Prefer docs/ or README files and obvious typos if present.
 
 Allowed improvements:
 - documentation
@@ -133,6 +141,9 @@ print("Selected file:", target)
 if target not in files:
     print("Model returned invalid file. Aborting.")
     exit()
+
+with open(LAST_SELECTED_FILE, "w") as f:
+    f.write(f"{target}\n")
 
 # -----------------------------
 # Read file
