@@ -1,5 +1,6 @@
 import subprocess
 import os
+import re
 from datetime import datetime
 from openai import OpenAI
 
@@ -38,6 +39,43 @@ def diff_has_meaningful_changes(diff):
             continue
         return True
     return False
+
+
+def readme_guided_target(readme_path, target, files):
+    with open(readme_path, "r") as f:
+        lines = f.readlines()
+
+    same_dir = os.path.dirname(readme_path)
+    mentions = []
+    avoid = set()
+    avoid_prefixes = ["do not", "don't", "avoid", "rather than", "instead of"]
+    for line in lines:
+        lower = line.lower()
+        for match in re.finditer(r"`([^`]+)`", line):
+            mention = match.group(1).strip()
+            mentions.append(mention)
+            prefix = lower[: match.start()]
+            if any(p in prefix for p in avoid_prefixes) and "edit" in prefix:
+                avoid.add(mention)
+            elif "edit" in lower and any(p in lower for p in avoid_prefixes):
+                avoid.add(mention)
+
+    def resolve(mention):
+        return mention if "/" in mention else f"{same_dir}/{mention}" if same_dir else mention
+
+    avoid_paths = {resolve(m) for m in avoid}
+    candidates = []
+    for mention in mentions:
+        path = resolve(mention)
+        if path in files and path != readme_path and path not in candidates:
+            candidates.append(path)
+
+    if target == readme_path or target in avoid_paths:
+        for path in candidates:
+            if path not in avoid_paths and os.path.basename(path) != "README.md":
+                context_files = [p for p in avoid_paths if p in files and p != path]
+                return path, context_files
+    return target, []
 
 
 def branch_exists(name):
@@ -90,15 +128,8 @@ if not files:
     print("No repo files found.")
     exit()
 
-# Always include high-priority paths, then fill up to 40 files.
-priority_prefixes = [
-    "docs/",
-]
-
-priority_files = [f for f in files if any(f.startswith(p) for p in priority_prefixes)]
-remaining_files = [f for f in files if f not in priority_files]
 max_files = 40
-file_candidates = priority_files + remaining_files[: max(0, max_files - len(priority_files))]
+file_candidates = files[:max_files]
 last_selected = None
 if os.path.exists(LAST_SELECTED_FILE):
     with open(LAST_SELECTED_FILE, "r") as f:
@@ -115,7 +146,6 @@ selection_prompt = """
 You are reviewing a software repository.
 
 Choose ONE file that could benefit from a small improvement.
-Prefer docs/ or README files and obvious typos if present.
 
 Allowed improvements:
 - documentation
@@ -142,12 +172,13 @@ if target not in files:
     print("Model returned invalid file. Aborting.")
     exit()
 
-if os.path.basename(target) == "README.md":
-    same_dir = os.path.dirname(target)
-    siblings = [f for f in files if f.startswith(f"{same_dir}/") and f != target]
-    if siblings:
-        target = siblings[0]
-        print("README selected; switching to:", target)
+readme_path = os.path.join(os.path.dirname(target), "README.md")
+context_files = []
+if readme_path in files:
+    next_target, context_files = readme_guided_target(readme_path, target, files)
+    if next_target != target:
+        target = next_target
+        print("README guidance; switching to:", target)
 
 with open(LAST_SELECTED_FILE, "w") as f:
     f.write(f"{target}\n")
@@ -158,6 +189,11 @@ with open(LAST_SELECTED_FILE, "w") as f:
 
 with open(target, "r") as f:
     original = f.read()
+
+context_blocks = ""
+for path in context_files:
+    with open(path, "r") as f:
+        context_blocks += f"\nCONTEXT_FILE: {path}\n{f.read()}\n"
 
 # -----------------------------
 # AI improves file
@@ -176,6 +212,7 @@ Rules:
 
 FILE:
 {original}
+{context_blocks}
 """
 
 resp2 = client.responses.create(
