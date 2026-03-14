@@ -43,6 +43,13 @@ def diff_has_meaningful_changes(diff):
     return False
 
 
+def is_whitespace_only_change(original, updated):
+    def normalize(text):
+        return "\n".join(line.strip() for line in text.splitlines())
+
+    return normalize(original) == normalize(updated)
+
+
 def readme_guided_target(readme_path, target, files):
     with open(readme_path, "r") as f:
         lines = f.readlines()
@@ -251,6 +258,8 @@ FILE:
     if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
         continue
     if updated.strip() == original.strip():
+        continue
+    if is_whitespace_only_change(original, updated):
         continue
     with open(target, "w") as f:
         f.write(updated)
