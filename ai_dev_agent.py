@@ -12,6 +12,7 @@ NO_CHANGE_MESSAGE = "No worthwhile improvements found; repo looks solid from her
 
 
 def normalize_model_output(text, original):
+    """Clean up AI model output and match original file's trailing newline."""
     cleaned = text.strip()
     if cleaned.startswith("```"):
         lines = cleaned.splitlines()
@@ -24,12 +25,14 @@ def normalize_model_output(text, original):
 
 
 def branch_exists(name):
+    """Check if a git branch exists."""
     return subprocess.call(
         ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{name}"]
     ) == 0
 
 
 def create_work_branch():
+    """Create a new work branch, appending date/counter if needed."""
     if not branch_exists(BRANCH_BASE):
         branch_name = BRANCH_BASE
     else:
@@ -44,13 +47,13 @@ def create_work_branch():
     print("Created branch:", branch_name)
 
 # -----------------------------
-# create work branch
+# Create work branch
 # -----------------------------
 
 create_work_branch()
 
 # -----------------------------
-# get repository files
+# Get repository files
 # -----------------------------
 
 files = subprocess.check_output(["git", "ls-files"]).decode().splitlines()
@@ -112,10 +115,10 @@ if target not in files:
     exit()
 
 # -----------------------------
-# read file
+# Read file
 # -----------------------------
 
-with open(target,"r") as f:
+with open(target, "r") as f:
     original = f.read()
 
 # -----------------------------
@@ -167,19 +170,19 @@ if updated.strip() == original.strip():
     exit()
 
 # -----------------------------
-# write file
+# Write file
 # -----------------------------
 
-with open(target,"w") as f:
+with open(target, "w") as f:
     f.write(updated)
 
 print("File updated.")
 
 # -----------------------------
-# generate diff
+# Generate diff
 # -----------------------------
 
-diff = subprocess.check_output(["git","diff",target]).decode()
+diff = subprocess.check_output(["git", "diff", target]).decode()
 
 if not diff.strip():
     print("No diff detected.")
@@ -211,16 +214,17 @@ entry = resp3.output_text.strip()
 print("Changelog entry:", entry)
 
 # -----------------------------
-# insert into CHANGELOG
+# Insert into CHANGELOG
 # -----------------------------
 
 if not os.path.exists(CHANGELOG):
-    with open(CHANGELOG,"w") as f:
+    with open(CHANGELOG, "w") as f:
         f.write("# Changelog\n\n## Unreleased\n")
 
-with open(CHANGELOG,"r") as f:
+with open(CHANGELOG, "r") as f:
     lines = f.readlines()
 
+# Ensure "## Unreleased" is at the top
 unreleased_index = None
 for i, line in enumerate(lines):
     if line.strip().lower() == "## unreleased":
@@ -228,9 +232,11 @@ for i, line in enumerate(lines):
         break
 
 if unreleased_index is None:
+    # If not present, insert at the top
     lines = ["## Unreleased\n", "\n"] + lines
     unreleased_index = 0
 elif unreleased_index != 0:
+    # Move "## Unreleased" section to the top
     end_index = unreleased_index + 1
     while end_index < len(lines):
         if lines[end_index].startswith("## ") and end_index != unreleased_index:
@@ -247,6 +253,7 @@ if insert_index < len(lines) and lines[insert_index].strip() == "":
 
 lines.insert(insert_index, f"- {entry}\n")
 
+# Keep a blank line after the last bullet before the next section
 next_index = insert_index + 1
 scan_index = next_index
 while scan_index < len(lines) and lines[scan_index].strip() == "":
@@ -256,7 +263,7 @@ if scan_index < len(lines) and lines[scan_index].startswith("## "):
     if next_index >= len(lines) or lines[next_index].strip() != "":
         lines.insert(next_index, "\n")
 
-with open(CHANGELOG,"w") as f:
+with open(CHANGELOG, "w") as f:
     f.writelines(lines)
 
 print("CHANGELOG updated.")
