@@ -12,27 +12,33 @@ NO_CHANGE_MESSAGE = "No worthwhile improvements found; repo looks solid from her
 
 
 def normalize_model_output(text, original):
-    """Clean up AI model output and match original file's trailing newline."""
+    """
+    Clean up AI model output and match original file's trailing newline.
+    Removes Markdown fences if present.
+    """
     cleaned = text.strip()
     if cleaned.startswith("```"):
         lines = cleaned.splitlines()
         if len(lines) >= 3 and lines[-1].strip() == "```":
             cleaned = "\n".join(lines[1:-1]).strip()
-
     if original.endswith("\n") and not cleaned.endswith("\n"):
         cleaned += "\n"
     return cleaned
 
 
 def branch_exists(name):
-    """Check if a git branch exists."""
+    """
+    Check if a git branch exists.
+    """
     return subprocess.call(
         ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{name}"]
     ) == 0
 
 
 def create_work_branch():
-    """Create a new work branch, appending date/counter if needed."""
+    """
+    Create a new work branch, appending date/counter if needed.
+    """
     if not branch_exists(BRANCH_BASE):
         branch_name = BRANCH_BASE
     else:
@@ -84,7 +90,7 @@ file_list = "\n".join(file_candidates)
 # AI selects file
 # -----------------------------
 
-selection_prompt = f"""
+selection_prompt = """
 You are reviewing a software repository.
 
 Choose ONE file that could benefit from a small improvement.
@@ -99,7 +105,7 @@ Return ONLY the filename.
 
 FILES:
 {file_list}
-"""
+""".format(file_list=file_list)
 
 resp = client.responses.create(
     model="gpt-4.1",
@@ -224,7 +230,7 @@ if not os.path.exists(CHANGELOG):
 with open(CHANGELOG, "r") as f:
     lines = f.readlines()
 
-# Ensure "## Unreleased" is at the top
+# Ensure '## Unreleased' is at the top
 unreleased_index = None
 for i, line in enumerate(lines):
     if line.strip().lower() == "## unreleased":
@@ -253,7 +259,7 @@ if insert_index < len(lines) and lines[insert_index].strip() == "":
 
 lines.insert(insert_index, f"- {entry}\n")
 
-# Keep a blank line after the last bullet before the next section
+# Ensure a blank line after the last bullet before the next section
 next_index = insert_index + 1
 scan_index = next_index
 while scan_index < len(lines) and lines[scan_index].strip() == "":
