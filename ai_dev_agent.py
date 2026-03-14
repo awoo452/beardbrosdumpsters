@@ -142,6 +142,13 @@ if target not in files:
     print("Model returned invalid file. Aborting.")
     exit()
 
+if os.path.basename(target) == "README.md":
+    same_dir = os.path.dirname(target)
+    siblings = [f for f in files if f.startswith(f"{same_dir}/") and f != target]
+    if siblings:
+        target = siblings[0]
+        print("README selected; switching to:", target)
+
 with open(LAST_SELECTED_FILE, "w") as f:
     f.write(f"{target}\n")
 

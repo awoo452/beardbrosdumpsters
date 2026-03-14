@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.0.26] - 2026-03-14
+### Changed
+- Redirect README selections to another file in the same folder.
+
 ## [1.0.25] - 2026-03-14
 ### Changed
 - converted readme sections to use markdown headings and bullet points for improved readability
