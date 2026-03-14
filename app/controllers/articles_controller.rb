@@ -2,12 +2,14 @@ class ArticlesController < ApplicationController
   before_action :authenticate_user!, only: [:create, :edit, :update, :destroy]
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   
-  # GET /articles or /articles.json
+  # GET /articles
+  # GET /articles.json
   def index
     @articles = Article.all
   end
 
-  # GET /articles/1 or /articles/1.json
+  # GET /articles/:id
+  # GET /articles/:id.json
   def show
   end
 
@@ -16,11 +18,12 @@ class ArticlesController < ApplicationController
     @article = Article.new
   end
 
-  # GET /articles/1/edit
+  # GET /articles/:id/edit
   def edit
   end
 
-  # POST /articles or /articles.json
+  # POST /articles
+  # POST /articles.json
   def create
     @article = Article.new(article_params)
 
@@ -35,7 +38,8 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /articles/1 or /articles/1.json
+  # PATCH/PUT /articles/:id
+  # PATCH/PUT /articles/:id.json
   def update
     respond_to do |format|
       if @article.update(article_params)
@@ -48,7 +52,8 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # DELETE /articles/1 or /articles/1.json
+  # DELETE /articles/:id
+  # DELETE /articles/:id.json
   def destroy
     @article.destroy!
 
@@ -59,12 +64,13 @@ class ArticlesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    # Callback to set article based on ID param
     def set_article
       @article = Article.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+    # Only allow a trusted parameter "white list" through.
     def article_params
       params.require(:article).permit(:title, :description, :body, :image)
     end
