@@ -223,7 +223,7 @@ Return ONLY the filename.
 
 FILES:
 {file_list}
-""".format(file_list=file_list)
+"""
 
 attempt = 0
 tried = set()
@@ -248,28 +248,30 @@ while attempt < MAX_ATTEMPTS:
     if target not in files:
         print("Model returned invalid file. Aborting.")
         exit()
+    selected_target = target
     readme_path = os.path.join(os.path.dirname(target), "README.md")
     context_files = []
     blocked = False
     if readme_path in files:
         next_target, context_files, blocked = readme_guided_target(readme_path, target, files)
-        if next_target != target:
+        if blocked:
+            tried.add(selected_target)
+            print("README guidance blocked selection; retrying.")
+            continue
+        if next_target and next_target != target:
+            tried.add(selected_target)
             target = next_target
             print("README guidance; switching to:", target)
-    if blocked:
-        tried.add(target)
-        print("README guidance blocked selection; retrying.")
-    else:
-        tried.add(target)
-        with open(LAST_SELECTED_FILE, "w") as f:
-            f.write(f"{target}\n")
-        with open(target, "r") as f:
-            original = f.read()
-        context_blocks = ""
-        for path in context_files:
-            with open(path, "r") as f:
-                context_blocks += f"\nCONTEXT_FILE: {path}\n{f.read()}\n"
-        improve_prompt = f"""
+    tried.add(target)
+    with open(LAST_SELECTED_FILE, "w") as f:
+        f.write(f"{target}\n")
+    with open(target, "r") as f:
+        original = f.read()
+    context_blocks = ""
+    for path in context_files:
+        with open(path, "r") as f:
+            context_blocks += f"\nCONTEXT_FILE: {path}\n{f.read()}\n"
+    improve_prompt = f"""
 Improve this file slightly.
 
 Rules:
@@ -284,38 +286,38 @@ FILE:
 {original}
 {context_blocks}
 """
-        resp2 = client.responses.create(
+    resp2 = client.responses.create(
+        model="gpt-4.1",
+        input=improve_prompt
+    )
+    updated = resp2.output_text.strip()
+    if updated == NO_CHANGE:
+        continue
+    updated = normalize_model_output(updated, original)
+    if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
+        retry_prompt = improve_prompt + "\nIMPORTANT: Return raw file contents only."
+        resp2_retry = client.responses.create(
             model="gpt-4.1",
-            input=improve_prompt
+            input=retry_prompt
         )
-        updated = resp2.output_text.strip()
-        if updated == NO_CHANGE:
-            continue
-        updated = normalize_model_output(updated, original)
-        if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
-            retry_prompt = improve_prompt + "\nIMPORTANT: Return raw file contents only."
-            resp2_retry = client.responses.create(
-                model="gpt-4.1",
-                input=retry_prompt
-            )
-            updated = normalize_model_output(resp2_retry.output_text, original)
-        if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
-            continue
-        if updated.strip() == original.strip():
-            continue
-        if is_whitespace_only_change(original, updated):
-            continue
+        updated = normalize_model_output(resp2_retry.output_text, original)
+    if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
+        continue
+    if updated.strip() == original.strip():
+        continue
+    if is_whitespace_only_change(original, updated):
+        continue
+    with open(target, "w") as f:
+        f.write(updated)
+    diff = subprocess.check_output(["git", "diff", target]).decode()
+    if not diff_has_meaningful_changes(diff):
         with open(target, "w") as f:
-            f.write(updated)
-        diff = subprocess.check_output(["git", "diff", target]).decode()
-        if not diff_has_meaningful_changes(diff):
-            with open(target, "w") as f:
-                f.write(original)
-            updated = ""
-            diff = ""
-            continue
-        success = True
-        break
+            f.write(original)
+        updated = ""
+        diff = ""
+        continue
+    success = True
+    break
 
 if not success:
     print(NO_CHANGE_MESSAGE)
