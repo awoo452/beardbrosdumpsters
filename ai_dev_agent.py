@@ -55,26 +55,52 @@ def readme_guided_target(readme_path, target, files):
         lines = f.readlines()
 
     same_dir = os.path.dirname(readme_path)
-    mentions = []
+    preferred = []
     avoid = set()
-    avoid_prefixes = ["do not", "don't", "avoid", "rather than", "instead of"]
+    avoid_phrases = ["do not edit", "don't edit", "avoid editing", "avoid changing"]
+    prefer_phrases = ["use ", "write to", "update ", "add to"]
     for line in lines:
         lower = line.lower()
-        for match in re.finditer(r"`([^`]+)`", line):
-            mention = match.group(1).strip()
-            mentions.append(mention)
-            prefix = lower[: match.start()]
-            if any(p in prefix for p in avoid_prefixes) and "edit" in prefix:
+        matches = [(m.group(1).strip(), m.start()) for m in re.finditer(r"`([^`]+)`", line)]
+        if not matches:
+            continue
+        split_index = -1
+        for phrase in ("rather than", "instead of"):
+            idx = lower.find(phrase)
+            if idx != -1:
+                split_index = idx
+                break
+        avoid_index = -1
+        for phrase in avoid_phrases:
+            idx = lower.find(phrase)
+            if idx != -1:
+                avoid_index = idx
+                break
+        prefer_index = -1
+        for phrase in prefer_phrases:
+            idx = lower.find(phrase)
+            if idx != -1:
+                prefer_index = idx
+                break
+        for mention, pos in matches:
+            if avoid_index != -1 and pos > avoid_index:
                 avoid.add(mention)
-            elif "edit" in lower and any(p in lower for p in avoid_prefixes):
-                avoid.add(mention)
+                continue
+            if split_index != -1:
+                if pos > split_index:
+                    avoid.add(mention)
+                else:
+                    preferred.append(mention)
+                continue
+            if prefer_index != -1 and pos > prefer_index:
+                preferred.append(mention)
 
     def resolve(mention):
         return mention if "/" in mention else f"{same_dir}/{mention}" if same_dir else mention
 
-    avoid_paths = {resolve(m) for m in avoid}
+    avoid_paths = {resolve(m) for m in avoid if resolve(m) in files and resolve(m) != readme_path}
     candidates = []
-    for mention in mentions:
+    for mention in preferred:
         path = resolve(mention)
         if path in files and path != readme_path and path not in candidates:
             candidates.append(path)
@@ -82,9 +108,21 @@ def readme_guided_target(readme_path, target, files):
     if target == readme_path or target in avoid_paths:
         for path in candidates:
             if path not in avoid_paths and os.path.basename(path) != "README.md":
-                context_files = [p for p in avoid_paths if p in files and p != path]
-                return path, context_files
-    return target, []
+                context_files = [p for p in avoid_paths if p != path]
+                return path, context_files, False
+        siblings = [
+            f for f in files
+            if f.startswith(f"{same_dir}/")
+            and f not in avoid_paths
+            and f != readme_path
+            and os.path.basename(f) != "README.md"
+        ]
+        if siblings:
+            context_files = [p for p in avoid_paths if p != siblings[0]]
+            return siblings[0], context_files, False
+        return None, list(avoid_paths), True
+    context_files = [p for p in avoid_paths if p != target]
+    return target, context_files, False
 
 
 def branch_exists(name):
@@ -172,7 +210,8 @@ selection_prompt = """
 You are reviewing a software repository.
 
 Choose ONE file that could benefit from a small improvement.
-Prefer files with obvious typos, profanity, or outdated wording.
+Prefer files with obvious typos or outdated wording.
+Avoid CSS unless there are clear text issues to fix.
 
 Allowed improvements:
 - documentation
@@ -209,13 +248,15 @@ while attempt < MAX_ATTEMPTS:
     if target not in files:
         print("Model returned invalid file. Aborting.")
         exit()
-    readme_path = os.path.join(os.path.dirname(target), "README.md")
-    context_files = []
-    if readme_path in files:
-        next_target, context_files = readme_guided_target(readme_path, target, files)
-        if next_target != target:
-            target = next_target
-            print("README guidance; switching to:", target)
+readme_path = os.path.join(os.path.dirname(target), "README.md")
+context_files = []
+if readme_path in files:
+    next_target, context_files, blocked = readme_guided_target(readme_path, target, files)
+    if blocked:
+        continue
+    if next_target != target:
+        target = next_target
+        print("README guidance; switching to:", target)
     tried.add(target)
     with open(LAST_SELECTED_FILE, "w") as f:
         f.write(f"{target}\n")
