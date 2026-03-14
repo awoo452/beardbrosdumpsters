@@ -137,7 +137,8 @@ files = subprocess.check_output(["git", "ls-files"]).decode().splitlines()
 ignore = [
     "CHANGELOG.md",
     ".gitignore",
-    "ai_dev_agent.py"
+    "ai_dev_agent.py",
+    "Dockerfile"
 ]
 
 files = [f for f in files if f not in ignore]
