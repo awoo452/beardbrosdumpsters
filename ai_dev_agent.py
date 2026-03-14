@@ -7,6 +7,20 @@ client = OpenAI()
 
 CHANGELOG = "CHANGELOG.md"
 BRANCH_BASE = "ai_dev_agent"
+NO_CHANGE = "NO_CHANGE"
+NO_CHANGE_MESSAGE = "No worthwhile improvements found; repo looks solid from here."
+
+
+def normalize_model_output(text, original):
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if len(lines) >= 3 and lines[-1].strip() == "```":
+            cleaned = "\n".join(lines[1:-1]).strip()
+
+    if original.endswith("\n") and not cleaned.endswith("\n"):
+        cleaned += "\n"
+    return cleaned
 
 
 def branch_exists(name):
@@ -117,6 +131,8 @@ Rules:
 - only readability or documentation
 - return the FULL updated file
 - no explanation
+- do not wrap the response in markdown or code fences
+- if no improvement is needed, return exactly {NO_CHANGE}
 
 FILE:
 {original}
@@ -127,10 +143,28 @@ resp2 = client.responses.create(
     input=improve_prompt
 )
 
-updated = resp2.output_text
+updated = resp2.output_text.strip()
+
+if updated == NO_CHANGE:
+    print(NO_CHANGE_MESSAGE)
+    exit()
+
+updated = normalize_model_output(updated, original)
+
+if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
+    retry_prompt = improve_prompt + "\nIMPORTANT: Return raw file contents only."
+    resp2_retry = client.responses.create(
+        model="gpt-4.1",
+        input=retry_prompt
+    )
+    updated = normalize_model_output(resp2_retry.output_text, original)
+
+if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
+    print("Model returned fenced output. Aborting.")
+    exit()
 
 if updated.strip() == original.strip():
-    print("No improvement made.")
+    print(NO_CHANGE_MESSAGE)
     exit()
 
 # -----------------------------
