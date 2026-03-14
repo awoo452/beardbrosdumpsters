@@ -91,7 +91,6 @@ Allowed improvements:
 - readability
 - comments
 - small bug fixes
-- README cleanup
 
 Return ONLY the filename.
 

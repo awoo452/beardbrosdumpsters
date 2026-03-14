@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.0.16] - 2026-03-14
+### Changed
+- By removing this one line of code there's a good chance the thing will actually start exploring the repository and not defaulting to making meaningless README updates, hopefully.
+
 ## [1.0.15] - 2026-03-14
 ### Changed
 - Prevented fenced markdown output in ai_dev_agent updates.
