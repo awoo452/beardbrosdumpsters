@@ -26,6 +26,19 @@ def normalize_model_output(text, original):
     return cleaned
 
 
+def diff_has_meaningful_changes(diff):
+    for line in diff.splitlines():
+        if not line.startswith(("+", "-")) or line.startswith(("+++", "---")):
+            continue
+        content = line[1:].strip()
+        if not content:
+            continue
+        if content.startswith(("#", "//", "/*", "*/", "*")):
+            continue
+        return True
+    return False
+
+
 def branch_exists(name):
     """
     Check if a git branch exists.
@@ -193,6 +206,12 @@ diff = subprocess.check_output(["git", "diff", target]).decode()
 
 if not diff.strip():
     print("No diff detected.")
+    exit()
+
+if not diff_has_meaningful_changes(diff):
+    with open(target, "w") as f:
+        f.write(original)
+    print(NO_CHANGE_MESSAGE)
     exit()
 
 # -----------------------------
