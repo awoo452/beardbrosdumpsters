@@ -2,13 +2,13 @@
 
 Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It provides a public marketing site plus a lightweight admin dashboard for managing landing cards, articles, rentals, pricing cards, and videos.
 
-**Features**
+## Features
 - Public pages: Home, Articles, Rentals (calendar), Videos.
 - Admin dashboard (approved users only) with quick links to edit content.
 - Rentals calendar uses `simple_calendar` and visual blocks to indicate booked dumpsters.
 - Devise authentication with manual approval gating.
 
-**Tech Stack**
+## Tech Stack
 - Ruby 4.0.1
 - Rails 8.1.2
 - PostgreSQL
@@ -16,50 +16,47 @@ Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It p
 - Simple Calendar
 - SassC
 
-**Documentation**
-- Home page pulls the latest three `LandingCard` records.
-- Articles page lists full articles (title, description, body, optional image).
-- Rentals page shows a month view calendar. Each rental paints a colored block for every day between `start_time` and `end_time`.
-- The app assumes three dumpsters total. If a date shows fewer than three blocks, there is likely availability (the UI still advises customers to call to confirm).
-- Videos page embeds YouTube videos using the `youtube_id` field. Add `?autoplay=1` to the URL to auto-play the embeds.
-- Only signed-in users can create/edit content. The dashboard link appears only for approved users.
+## Documentation
 
-**Admin Workflow**
-- Sign up via Devise.
-- Approve the user in the Rails console:
+- The **Home** page displays the latest three `LandingCard` records.
+- The **Articles** page lists full articles (title, description, body, and optional image).
+- The **Rentals** page shows a month view calendar. Each rental paints a colored block for each day between `start_time` and `end_time`.
+- The app assumes three dumpsters total. If a date has fewer than three blocks, there is likely availability (UI still advises customers to call to confirm).
+- The **Videos** page embeds YouTube videos using the `youtube_id` field. Add `?autoplay=1` to the URL to auto-play embeds.
+- Only signed-in, approved users can create/edit content. The dashboard link appears only for approved users.
 
-```ruby
-user = User.find_by(email: "you@example.com")
-user.update!(approved: true)
-```
+## Admin Workflow
 
-- Visit `/dashboard` to access links for managing content.
+1. Sign up via Devise.
+2. Approve the user in the Rails console:
+   ```ruby
+   user = User.find_by(email: "you@example.com")
+   user.update!(approved: true)
+   ```
+3. Visit `/dashboard` to access links for managing content.
 
-**Local Development**
-- Install Ruby 4.0.1 and PostgreSQL.
-- Install gems:
+## Local Development
 
-```bash
-bundle install
-```
+1. Install Ruby 4.0.1 and PostgreSQL.
+2. Install gems:
+   ```bash
+   bundle install
+   ```
+3. Create and migrate the database:
+   ```bash
+   bin/rails db:create db:migrate
+   ```
+4. Start the server:
+   ```bash
+   bin/rails server
+   ```
 
-- Create and migrate the database:
+## Images
 
-```bash
-bin/rails db:create db:migrate
-```
-
-- Start the server:
-
-```bash
-bin/rails server
-```
-
-**Images**
-- Image fields store a filename (for example `landing1.png`).
+- Image fields store a filename (for example, `landing1.png`).
 - Place images in `app/assets/images` and reference the filename in records.
 
-**Sample Landing Cards**
+## Sample Landing Cards
 
 ```ruby
 LandingCard.create!([
@@ -75,12 +72,12 @@ LandingCard.create!([
   },
   {
     title: "You Call, We Haul",
-    description: "Contact us today to schedule your next delivery. Head on over to the Articles section to see our latest new & events, or the Rentals page if you want to see our general dumpster availability.",
+    description: "Contact us today to schedule your next delivery. Head on over to the Articles section to see our latest news & events, or the Rentals page if you want to see our general dumpster availability.",
     image: "landing3.png"
   }
 ])
 ```
 
-**Notes**
+## Notes
 - Calendar rendering logic lives in `app/views/rentals/index.html.erb` and uses the rental title to pick a colored block.
-- No UI exists for user approval, so approvals are handled through the console.
+- No UI exists for user approval; approvals are handled in the console.
