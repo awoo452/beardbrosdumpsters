@@ -2,6 +2,7 @@ import subprocess
 import os
 import re
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from openai import OpenAI
 
 client = OpenAI()
@@ -104,6 +105,22 @@ def create_work_branch():
 
     subprocess.check_call(["git", "checkout", "-b", branch_name])
     print("Created branch:", branch_name)
+
+
+def next_patch_version(lines):
+    header_re = re.compile(r"^## \[(\d+)\.(\d+)\.(\d+)\] - ")
+    scan = lines[:50] if len(lines) > 50 else lines
+    for line in scan:
+        match = header_re.match(line.strip())
+        if match:
+            major, minor, patch = map(int, match.groups())
+            return f"{major}.{minor}.{patch + 1}"
+    for line in lines:
+        match = header_re.match(line.strip())
+        if match:
+            major, minor, patch = map(int, match.groups())
+            return f"{major}.{minor}.{patch + 1}"
+    return "0.1.0"
 
 # -----------------------------
 # Create work branch
@@ -301,49 +318,30 @@ print("Changelog entry:", entry)
 
 if not os.path.exists(CHANGELOG):
     with open(CHANGELOG, "w") as f:
-        f.write("# Changelog\n\n## Unreleased\n")
+        f.write("# Changelog\n\n")
 
 with open(CHANGELOG, "r") as f:
     lines = f.readlines()
 
-# Ensure '## Unreleased' is at the top
-unreleased_index = None
+version = next_patch_version(lines)
+today = datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%Y-%m-%d")
+new_section = [
+    f"## [{version}] - {today}\n",
+    "### Changed\n",
+    f"- {entry}\n",
+    "\n",
+]
+
+insert_at = None
 for i, line in enumerate(lines):
-    if line.strip().lower() == "## unreleased":
-        unreleased_index = i
+    if line.startswith("## ["):
+        insert_at = i
         break
 
-if unreleased_index is None:
-    # If not present, insert at the top
-    lines = ["## Unreleased\n", "\n"] + lines
-    unreleased_index = 0
-elif unreleased_index != 0:
-    # Move "## Unreleased" section to the top
-    end_index = unreleased_index + 1
-    while end_index < len(lines):
-        if lines[end_index].startswith("## ") and end_index != unreleased_index:
-            break
-        end_index += 1
-    unreleased_section = lines[unreleased_index:end_index]
-    del lines[unreleased_index:end_index]
-    lines = unreleased_section + lines
-    unreleased_index = 0
-
-insert_index = unreleased_index + 1
-if insert_index < len(lines) and lines[insert_index].strip() == "":
-    insert_index += 1
-
-lines.insert(insert_index, f"- {entry}\n")
-
-# Ensure a blank line after the last bullet before the next section
-next_index = insert_index + 1
-scan_index = next_index
-while scan_index < len(lines) and lines[scan_index].strip() == "":
-    scan_index += 1
-
-if scan_index < len(lines) and lines[scan_index].startswith("## "):
-    if next_index >= len(lines) or lines[next_index].strip() != "":
-        lines.insert(next_index, "\n")
+if insert_at is None:
+    lines.extend(new_section)
+else:
+    lines[insert_at:insert_at] = new_section
 
 with open(CHANGELOG, "w") as f:
     f.writelines(lines)
