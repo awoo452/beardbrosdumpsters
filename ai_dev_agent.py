@@ -12,6 +12,7 @@ BRANCH_BASE = "ai_dev_agent"
 NO_CHANGE = "NO_CHANGE"
 NO_CHANGE_MESSAGE = "No worthwhile improvements found; repo looks solid from here."
 LAST_SELECTED_FILE = ".ai_dev_agent_last_file"
+REVIEWED_FILES = ".ai_dev_agent_reviewed_files"
 MAX_ATTEMPTS = 3
 
 
@@ -125,6 +126,21 @@ def readme_guided_target(readme_path, target, files):
     return target, context_files, False
 
 
+def load_reviewed():
+    if not os.path.exists(REVIEWED_FILES):
+        return set()
+    with open(REVIEWED_FILES, "r") as f:
+        return {line.strip() for line in f if line.strip()}
+
+
+def record_reviewed(path, reviewed):
+    if path in reviewed:
+        return
+    with open(REVIEWED_FILES, "a") as f:
+        f.write(f"{path}\n")
+    reviewed.add(path)
+
+
 def branch_exists(name):
     """
     Check if a git branch exists.
@@ -178,6 +194,7 @@ create_work_branch()
 # -----------------------------
 
 files = subprocess.check_output(["git", "ls-files"]).decode().splitlines()
+reviewed = load_reviewed()
 
 ignore = [
     "CHANGELOG.md",
@@ -186,14 +203,19 @@ ignore = [
     "Dockerfile"
 ]
 
-files = [f for f in files if f not in ignore]
+all_files = [f for f in files if f not in ignore]
 
-if not files:
+if not all_files:
     print("No repo files found.")
     exit()
 
+unreviewed_files = [f for f in all_files if f not in reviewed]
+if not unreviewed_files:
+    print(f"All tracked files have been reviewed; clear {REVIEWED_FILES} to reset.")
+    exit()
+
 max_files = 40
-file_candidates = files[:max_files]
+file_candidates = unreviewed_files[:max_files]
 last_selected = None
 if os.path.exists(LAST_SELECTED_FILE):
     with open(LAST_SELECTED_FILE, "r") as f:
@@ -245,21 +267,31 @@ while attempt < MAX_ATTEMPTS:
     )
     target = resp.output_text.strip()
     print("Selected file:", target)
-    if target not in files:
+    if target not in all_files:
         print("Model returned invalid file. Aborting.")
         exit()
+    if target in reviewed:
+        tried.add(target)
+        print("Previously reviewed file; retrying.")
+        continue
     selected_target = target
+    record_reviewed(selected_target, reviewed)
     readme_path = os.path.join(os.path.dirname(target), "README.md")
     context_files = []
     blocked = False
-    if readme_path in files:
-        next_target, context_files, blocked = readme_guided_target(readme_path, target, files)
+    if readme_path in all_files:
+        next_target, context_files, blocked = readme_guided_target(readme_path, target, all_files)
         if blocked:
             tried.add(selected_target)
             print("README guidance blocked selection; retrying.")
             continue
         if next_target and next_target != target:
             tried.add(selected_target)
+            if next_target in reviewed:
+                tried.add(next_target)
+                print("README guidance chose a previously reviewed file; retrying.")
+                continue
+            record_reviewed(next_target, reviewed)
             target = next_target
             print("README guidance; switching to:", target)
     tried.add(target)
