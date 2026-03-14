@@ -11,6 +11,7 @@ BRANCH_BASE = "ai_dev_agent"
 NO_CHANGE = "NO_CHANGE"
 NO_CHANGE_MESSAGE = "No worthwhile improvements found; repo looks solid from here."
 LAST_SELECTED_FILE = ".ai_dev_agent_last_file"
+MAX_ATTEMPTS = 3
 
 
 def normalize_model_output(text, original):
@@ -146,6 +147,7 @@ selection_prompt = """
 You are reviewing a software repository.
 
 Choose ONE file that could benefit from a small improvement.
+Prefer files with obvious typos, profanity, or outdated wording.
 
 Allowed improvements:
 - documentation
@@ -159,47 +161,46 @@ FILES:
 {file_list}
 """.format(file_list=file_list)
 
-resp = client.responses.create(
-    model="gpt-4.1",
-    input=selection_prompt
-)
-
-target = resp.output_text.strip()
-
-print("Selected file:", target)
-
-if target not in files:
-    print("Model returned invalid file. Aborting.")
-    exit()
-
-readme_path = os.path.join(os.path.dirname(target), "README.md")
-context_files = []
-if readme_path in files:
-    next_target, context_files = readme_guided_target(readme_path, target, files)
-    if next_target != target:
-        target = next_target
-        print("README guidance; switching to:", target)
-
-with open(LAST_SELECTED_FILE, "w") as f:
-    f.write(f"{target}\n")
-
-# -----------------------------
-# Read file
-# -----------------------------
-
-with open(target, "r") as f:
-    original = f.read()
-
-context_blocks = ""
-for path in context_files:
-    with open(path, "r") as f:
-        context_blocks += f"\nCONTEXT_FILE: {path}\n{f.read()}\n"
-
-# -----------------------------
-# AI improves file
-# -----------------------------
-
-improve_prompt = f"""
+attempt = 0
+tried = set()
+target = None
+original = ""
+updated = ""
+diff = ""
+success = False
+while attempt < MAX_ATTEMPTS:
+    attempt += 1
+    candidates = [f for f in file_candidates if f not in tried]
+    if not candidates:
+        print(NO_CHANGE_MESSAGE)
+        exit()
+    file_list = "\n".join(candidates)
+    resp = client.responses.create(
+        model="gpt-4.1",
+        input=selection_prompt.format(file_list=file_list)
+    )
+    target = resp.output_text.strip()
+    print("Selected file:", target)
+    if target not in files:
+        print("Model returned invalid file. Aborting.")
+        exit()
+    readme_path = os.path.join(os.path.dirname(target), "README.md")
+    context_files = []
+    if readme_path in files:
+        next_target, context_files = readme_guided_target(readme_path, target, files)
+        if next_target != target:
+            target = next_target
+            print("README guidance; switching to:", target)
+    tried.add(target)
+    with open(LAST_SELECTED_FILE, "w") as f:
+        f.write(f"{target}\n")
+    with open(target, "r") as f:
+        original = f.read()
+    context_blocks = ""
+    for path in context_files:
+        with open(path, "r") as f:
+            context_blocks += f"\nCONTEXT_FILE: {path}\n{f.read()}\n"
+    improve_prompt = f"""
 Improve this file slightly.
 
 Rules:
@@ -214,33 +215,38 @@ FILE:
 {original}
 {context_blocks}
 """
-
-resp2 = client.responses.create(
-    model="gpt-4.1",
-    input=improve_prompt
-)
-
-updated = resp2.output_text.strip()
-
-if updated == NO_CHANGE:
-    print(NO_CHANGE_MESSAGE)
-    exit()
-
-updated = normalize_model_output(updated, original)
-
-if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
-    retry_prompt = improve_prompt + "\nIMPORTANT: Return raw file contents only."
-    resp2_retry = client.responses.create(
+    resp2 = client.responses.create(
         model="gpt-4.1",
-        input=retry_prompt
+        input=improve_prompt
     )
-    updated = normalize_model_output(resp2_retry.output_text, original)
+    updated = resp2.output_text.strip()
+    if updated == NO_CHANGE:
+        continue
+    updated = normalize_model_output(updated, original)
+    if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
+        retry_prompt = improve_prompt + "\nIMPORTANT: Return raw file contents only."
+        resp2_retry = client.responses.create(
+            model="gpt-4.1",
+            input=retry_prompt
+        )
+        updated = normalize_model_output(resp2_retry.output_text, original)
+    if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
+        continue
+    if updated.strip() == original.strip():
+        continue
+    with open(target, "w") as f:
+        f.write(updated)
+    diff = subprocess.check_output(["git", "diff", target]).decode()
+    if not diff_has_meaningful_changes(diff):
+        with open(target, "w") as f:
+            f.write(original)
+        updated = ""
+        diff = ""
+        continue
+    success = True
+    break
 
-if updated.lstrip().startswith("```") and not original.lstrip().startswith("```"):
-    print("Model returned fenced output. Aborting.")
-    exit()
-
-if updated.strip() == original.strip():
+if not success:
     print(NO_CHANGE_MESSAGE)
     exit()
 
@@ -257,16 +263,11 @@ print("File updated.")
 # Generate diff
 # -----------------------------
 
-diff = subprocess.check_output(["git", "diff", target]).decode()
+if not diff:
+    diff = subprocess.check_output(["git", "diff", target]).decode()
 
 if not diff.strip():
     print("No diff detected.")
-    exit()
-
-if not diff_has_meaningful_changes(diff):
-    with open(target, "w") as f:
-        f.write(original)
-    print(NO_CHANGE_MESSAGE)
     exit()
 
 # -----------------------------
