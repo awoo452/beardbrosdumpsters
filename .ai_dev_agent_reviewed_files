@@ -1,0 +1,16 @@
+README.md
+LICENSE
+Gemfile
+Gemfile.lock
+app/javascript/controllers/hello_controller.js
+Rakefile
+app/controllers/application_controller.rb
+app/javascript/application.js
+app/controllers/documents_controller.rb
+.ruby-version
+.ai_dev_agent_last_file
+app/mailers/application_mailer.rb
+app/controllers/landing_cards_controller.rb
+app/controllers/legal_controller.rb
+app/jobs/application_job.rb
+app/javascript/controllers/application.js

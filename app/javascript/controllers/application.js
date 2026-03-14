@@ -1,9 +1,12 @@
 import { Application } from "@hotwired/stimulus"
 
+// Start the Stimulus application
 const application = Application.start()
 
-// Configure Stimulus development experience
+// Disable debug mode for production
 application.debug = false
-window.Stimulus   = application
+
+// Expose Stimulus application globally for debugging
+window.Stimulus = application
 
 export { application }
