@@ -7,6 +7,7 @@ spec/v2.0.0.html).
 ## [1.0.38] - 2026-03-14
 ### Changed
 - Skip previously reviewed files using a persistent review list.
+- Removed last-file selection tracking in favor of reviewed list as part of this.
 
 ## [1.0.37] - 2026-03-14
 ### Changed
