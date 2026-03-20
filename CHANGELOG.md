@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.0.47] - 2026-03-20
+### Added
+- Added GitHub Actions CI with Postgres-backed test and system test jobs.
+### Changed
+- Use the rack test driver for system tests when running in CI to avoid selenium requirements.
+
 ## [1.0.46] - 2026-03-19
 ### Changed
 - Switched layout scripts to `javascript_importmap_tags` to avoid module import errors.
