@@ -92,14 +92,9 @@ def main():
         help="Create the PR as a draft",
     )
     parser.add_argument(
-        "--allow-dirty",
+        "--no-commit",
         action="store_true",
-        help="Allow uncommitted changes (not recommended)",
-    )
-    parser.add_argument(
-        "--commit-changelog",
-        action="store_true",
-        help="Commit all changes using the latest CHANGELOG version as message",
+        help="Skip auto-committing dirty changes before opening the PR",
     )
     args = parser.parse_args()
 
@@ -113,7 +108,7 @@ def main():
         print("Refusing to open a PR from main/master. Create a feature branch first.")
         sys.exit(1)
 
-    if args.commit_changelog and not working_tree_clean():
+    if not args.no_commit and not working_tree_clean():
         version = latest_changelog_version()
         if not version:
             print("Unable to find a changelog version header in CHANGELOG.md.")
@@ -125,10 +120,6 @@ def main():
         except RuntimeError as exc:
             print(str(exc))
             sys.exit(1)
-
-    if not args.allow_dirty and not working_tree_clean():
-        print("Working tree is dirty. Commit or stash changes, or pass --allow-dirty.")
-        sys.exit(1)
 
     base = args.base or default_base_branch()
     if not base:

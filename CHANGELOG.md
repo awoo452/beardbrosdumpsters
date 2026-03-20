@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/
 spec/v2.0.0.html).
 
+## [1.0.43] - 2026-03-19
+### Changed
+- Defaulted ai_open_pr to auto-commit dirty changes without extra flags.
+
 ## [1.0.42] - 2026-03-19
 ### Added
 - Added `ai_open_pr.py` helper for opening PRs via the gh CLI.
