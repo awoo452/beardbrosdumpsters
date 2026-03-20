@@ -9,7 +9,7 @@ Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It p
 - Devise authentication with manual approval gating.
 
 ## Tech Stack
-- Ruby 4.0.1
+- Ruby 4.0.2
 - Rails 8.1.2
 - PostgreSQL
 - Devise
@@ -37,7 +37,7 @@ Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It p
 
 ## Local Development
 
-1. Install Ruby 4.0.1 and PostgreSQL.
+1. Install Ruby 4.0.2 and PostgreSQL.
 2. Install gems:
    ```bash
    bundle install
