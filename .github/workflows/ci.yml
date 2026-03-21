@@ -38,7 +38,6 @@ jobs:
         run: bin/rails db:test:prepare test
 
   system-test:
-    if: ${{ hashFiles('test/system/**/*_test.rb') != '' }}
     runs-on: ubuntu-latest
     services:
       postgres:
