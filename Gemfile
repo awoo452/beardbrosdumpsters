@@ -70,7 +70,7 @@ group :test do
 end
 
 # Authentication solution for Rails. See: https://github.com/heartcombo/devise
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 
 # Simple calendar for Rails apps. See: https://github.com/excid3/simple_calendar
 gem "simple_calendar", "~> 3.1"
