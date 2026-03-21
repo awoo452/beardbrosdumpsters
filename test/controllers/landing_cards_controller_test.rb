@@ -3,6 +3,8 @@ require "test_helper"
 class LandingCardsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @landing_card = landing_cards(:one)
+    @user = users(:one)
+    sign_in @user
   end
 
   test "should get index" do
