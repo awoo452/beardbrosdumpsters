@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.51] - 2026-03-20
+### Fixed
+- Updated system tests to authenticate, follow the dashboard entry points, and assert actual UI content.
+- Switched system tests to the rack test driver to avoid selenium setup issues.
+
 ## [1.0.50] - 2026-03-20
 ### Fixed
 - Avoided asset pipeline errors in tests by clearing fixture image names.
