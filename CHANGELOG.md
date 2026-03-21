@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.54] - 2026-03-21
+### Changed
+- Standardized changelog dates to YYYY-MM-DD.
+
 ## [1.0.53] - 2026-03-21
 ### Changed
 - Standardized legal pages on JSON-backed content and added the Accessibility page.
@@ -185,11 +189,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Changelog standardization.
 
-## [1.0.12] - 2026/02/23
+## [1.0.12] - 2026-02-23
 ### Removed
 - Flash notices/alerts from controllers and views.
 
-## [1.0.11] - 2026/02/23
+## [1.0.11] - 2026-02-23
 ### Removed
 - Pricing cards feature, routes, and UI.
 - Pricing card model, controller, views, tests, and fixture data.
@@ -197,13 +201,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Migration to drop the pricing_cards table.
 
-## [1.0.10] - 2026/02/23
+## [1.0.10] - 2026-02-23
 ### Added
 - Documents feature with CRUD pages for internal docs.
 - Docs landing page linked from the dashboard.
 - Seed SQL for initial docs (`db/docs.sql`).
 
-## [1.0.9] - 2026/02/22
+## [1.0.9] - 2026-02-22
 ### Added
 - Terms of Use and Privacy Policy pages.
 - LICENSE file.
@@ -211,7 +215,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Footer now links to Terms and Privacy.
 
-## [1.0.7] - 2026/02/22
+## [1.0.7] - 2026-02-22
 ### Rental Emoji Selection
 
 ### Added
@@ -224,7 +228,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Dashboard note**:
   - Updated guidance to mention the new dropdown.
 
-## [1.0.8] - 2026/02/22
+## [1.0.8] - 2026-02-22
 ### Rental Emoji Cleanup
 
 ### Changed
@@ -235,10 +239,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Dashboard note**:
   - Simplified guidance to match the new behavior.
 
-## [1.0.6] - 2026/02/22
+## [1.0.6] - 2026-02-22
 ### Dashboard Updates
 
-## [1.0.5] - 2026/02/22
+## [1.0.5] - 2026-02-22
 ### Mobile-Friendly UI Cleanup
 
 ### Added
@@ -254,7 +258,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Footer**:
   - Removed inline styles in favor of stylesheet rules.
 
-## [1.0.4] - 2026/02/22
+## [1.0.4] - 2026-02-22
 ### Rentals Calendar Refresh
 
 ### Added
@@ -270,7 +274,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Rental model**:
   - Emoji selection now pulls from `DUMPSTER_ICONS` with safe fallbacks.
 
-## [1.0.3] - 2026/02/22
+## [1.0.3] - 2026-02-22
 ### Runtime Updates
 
 ### Changed
@@ -278,14 +282,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Rails**: Updated to 8.1.2 (pinned in `Gemfile` and `Gemfile.lock`).
 - **README**: Updated version references.
 
-## [1.0.2] - 2025/04/02
+## [1.0.2] - 2025-04-02
 ### Dashboard Enhancements & Calendar Context
 
 ### Added
 - **Navigation**:
   - Contact phone number listed under logo
 
-## [1.0.1] - 2025/04/02
+## [1.0.1] - 2025-04-02
 ### Dashboard Enhancements & Calendar Context
 
 ### Added
@@ -308,43 +312,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Enhances UX for admin users managing content.
 - Provides clearer calendar context for rentals.
 
-## [1.0.0] - 2025/04/02
+## [1.0.0] - 2025-04-02
 
 ### Changed
 - **Footer**: Centered for better alignment.
 - **App Name**: Updated to reflect new branding.
 - **Navigation**: Removed unnecessary items for a cleaner layout.
 
-## [0.1.10] - 2025/04/02
-### Finalizing before release 
+## [0.1.10] - 2025-04-02
+### Finalizing before release
 
-### Changed  
-- **`index.html.erb`**:  
-  - Removed unnecessary bloat for a cleaner, more efficient layout.  
-- **`application.scss`**:  
-  - Set default font to Arial sitewide for a consistent look.  
-- **`calendar/show.html.erb`**:  
-  - Fixed calendar display issue by adjusting absolute positioning (thanks to ChatGPT!).  
-  - Added actual date display for each day on the calendar.  
+### Changed
+- **`index.html.erb`**:
+  - Removed unnecessary bloat for a cleaner, more efficient layout.
+- **`application.scss`**:
+  - Set default font to Arial sitewide for a consistent look.
+- **`calendar/show.html.erb`**:
+  - Fixed calendar display issue by adjusting absolute positioning (thanks to ChatGPT!).
+  - Added actual date display for each day on the calendar.
 
-### Added  
+### Added
 - Authentication for editing actions (to restrict unauthorized access).
 
-### Notes  
-- Improved calendar layout and functionality.  
-- Streamlined the homepage for better performance.  
+### Notes
+- Improved calendar layout and functionality.
+- Streamlined the homepage for better performance.
 - Enhanced security with authentication for edits.
 
 
-## [0.1.9] - 2025/04/02  
-### Dashboard Updates  
+## [0.1.9] - 2025-04-02
+### Dashboard Updates
 
-### Changed  
-- **`dashboard/index.html.erb`**:  
+### Changed
+- **`dashboard/index.html.erb`**:
   - Displayed basic info for each object in the database (title only) with links to edit.
   - Other changes made to related controllers for auth.
 
-## [0.1.8] - 2025/04/02
+## [0.1.8] - 2025-04-02
 ### Pre-Release
 
 ### Added
@@ -353,14 +357,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Imported `articles.scss` into **`application.scss`** (oops).
 
-## [0.1.7] - 2025/04/02
+## [0.1.7] - 2025-04-02
 ### Pre-Release
 
 ### Changed
 - Imported `simple-calendar` into **`application.scss`**.
 - Added emoji support between **`models/rental.rb`** and **`rentals/index.html.erb`**.
 
-## [0.1.6] - 2025/04/01
+## [0.1.6] - 2025-04-01
 ### Pre-Release
 
 ### Added
@@ -375,7 +379,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated **`nav`**:
   - Changed `logout` to a button to prevent errors.
 
-## [0.1.5] - 2025/04/01
+## [0.1.5] - 2025-04-01
 ### Pre-Release
 
 ### Changed
@@ -386,7 +390,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added logo and landing images (1-3).
 - Updated homepage to display landing information.
 
-## [0.1.4] - 2025/04/01
+## [0.1.4] - 2025-04-01
 ### Pre-Release
 
 ### Added
@@ -397,7 +401,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Removed
 - confirmable from user model
 
-## [0.1.3] - 2025/04/01
+## [0.1.3] - 2025-04-01
 ### Pre-Release
 
 ### Added
@@ -406,20 +410,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Commented out `sign_in` related sections for now in the navigation.
 
-## [0.1.2] - 2025/04/01
-### Pre-Release  
+## [0.1.2] - 2025-04-01
+### Pre-Release
 
-### Added  
-- **`dashboard_controller`**:  
-  - Authenticates user and ensures approval before access.  
-- **`home_controller`**:  
-  - Serves as the public landing page.  
+### Added
+- **`dashboard_controller`**:
+  - Authenticates user and ensures approval before access.
+- **`home_controller`**:
+  - Serves as the public landing page.
 
-### Changed  
-- **Routes**:  
-  - Set root path to `home#index`.  
+### Changed
+- **Routes**:
+  - Set root path to `home#index`.
 
-## [0.1.1] - 2025/04/01
+## [0.1.1] - 2025-04-01
 ### Pre-Release
 
 ### Added
@@ -430,7 +434,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - **`rental`**: `title`, `address`, `start_time`, `end_time`
   - **`video`**: `title`, `description`, `youtube_id`
 
-## [0.1.0] - 2025/04/01
+## [0.1.0] - 2025-04-01
 ### Pre-Release
 
 ### Added
