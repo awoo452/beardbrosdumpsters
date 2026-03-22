@@ -3,29 +3,22 @@
 Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It provides a public marketing site plus a lightweight admin dashboard for managing landing cards, articles, rentals, pricing cards, and videos.
 
 ## Features
+
 - Public pages: Home, Articles, Rentals (calendar), Videos.
 - Admin dashboard (approved users only) with quick links to edit content.
 - Rentals calendar uses `simple_calendar` and visual blocks to indicate booked dumpsters.
 - Devise authentication with manual approval gating.
 
-## Tech Stack
-- Ruby 4.0.2
-- Rails 8.1.2
-- PostgreSQL
-- Devise
-- Simple Calendar
-- SassC
+### Documentation
 
-## Documentation
+The Home page displays the latest three `LandingCard` records.
+The Articles page lists full articles (title, description, body, and optional image).
+The Rentals page shows a month view calendar. Each rental paints a colored block for each day between `start_time` and `end_time`.
+The app assumes three dumpsters total. If a date has fewer than three blocks, there is likely availability (UI still advises customers to call to confirm).
+The Videos page embeds YouTube videos using the `youtube_id` field. Add `?autoplay=1` to the URL to auto-play embeds.
+Only signed-in, approved users can create/edit content. The dashboard link appears only for approved users.
 
-- The **Home** page displays the latest three `LandingCard` records.
-- The **Articles** page lists full articles (title, description, body, and optional image).
-- The **Rentals** page shows a month view calendar. Each rental paints a colored block for each day between `start_time` and `end_time`.
-- The app assumes three dumpsters total. If a date has fewer than three blocks, there is likely availability (UI still advises customers to call to confirm).
-- The **Videos** page embeds YouTube videos using the `youtube_id` field. Add `?autoplay=1` to the URL to auto-play embeds.
-- Only signed-in, approved users can create/edit content. The dashboard link appears only for approved users.
-
-## Admin Workflow
+### Admin Workflow
 
 1. Sign up via Devise.
 2. Approve the user in the Rails console:
@@ -35,28 +28,12 @@ Beard Bros Dumpsters is a Rails 7 app for a local dumpster rental business. It p
    ```
 3. Visit `/dashboard` to access links for managing content.
 
-## Local Development
-
-1. Install Ruby 4.0.2 and PostgreSQL.
-2. Install gems:
-   ```bash
-   bundle install
-   ```
-3. Create and migrate the database:
-   ```bash
-   bin/rails db:create db:migrate
-   ```
-4. Start the server:
-   ```bash
-   bin/rails server
-   ```
-
-## Images
+### Images
 
 - Image fields store a filename (for example, `landing1.png`).
 - Place images in `app/assets/images` and reference the filename in records.
 
-## Sample Landing Cards
+### Sample Landing Cards
 
 ```ruby
 LandingCard.create!([
@@ -78,6 +55,27 @@ LandingCard.create!([
 ])
 ```
 
-## Notes
+### Notes
+
 - Calendar rendering logic lives in `app/views/rentals/index.html.erb` and uses the rental title to pick a colored block.
 - No UI exists for user approval; approvals are handled in the console.
+
+## Setup
+
+Prereqs: Ruby 4.0.2, Rails 8.1.2, PostgreSQL, Devise, Simple Calendar, SassC.
+
+1. `bundle install`
+2. `bin/rails db:create db:migrate`
+
+## Run
+
+1. `bin/rails server`
+
+## Tests
+
+1. `bin/rails test`
+2. `bin/rails test:system`
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for notable changes.
